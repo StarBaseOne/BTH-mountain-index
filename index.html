@@ -1,0 +1,306 @@
+// ----- HTML (index.html) -----
+/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultra Race Cards</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Ultra Race Cards</h1>
+    <p>Detailed information and AI-powered insights for ultra running races</p>
+  </header>
+  
+  <main>
+    <section id="race-list" class="race-list-container">
+      <h2>Available Races</h2>
+      <!-- Race list will be populated by JavaScript -->
+      <div class="loading">Loading race data...</div>
+    </section>
+    
+    <section id="race-details" class="race-details-container" style="display: none;">
+      <!-- Race details will be populated by JavaScript -->
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Ultra Race Cards. Powered by Google Sheets and Claude AI.</p>
+  </footer>
+  
+  <script src="js/app.js"></script>
+</body>
+</html>
+*/
+
+// ----- CSS (styles.css) -----
+/*
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #8B2323;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+  color: #444;
+}
+
+.race-list-container {
+  margin-bottom: 40px;
+}
+
+.race-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.race-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.race-summary h3 {
+  margin: 0 0 5px;
+}
+
+.rating {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.rating.elite {
+  background-color: #8B2323;
+}
+
+.rating.advanced {
+  background-color: #A52A2A;
+}
+
+.rating.intermediate {
+  background-color: #CD5C5C;
+}
+
+.rating.beginner {
+  background-color: #E9967A;
+}
+
+.view-button {
+  background-color: #4682B4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.view-button:hover {
+  background-color: #36648B;
+}
+
+.race-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin-bottom: 30px;
+}
+
+.card-header {
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+.rating-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: white;
+  color: #8B2323;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.description {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.features-list li {
+  margin-bottom: 10px;
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.score-container {
+  margin: 20px 0;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.score-label {
+  width: 150px;
+  font-weight: 500;
+}
+
+.score-bar {
+  flex-grow: 1;
+  height: 15px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 15px;
+}
+
+.score-fill {
+  height: 100%;
+}
+
+.blue { background-color: #4682B4; }
+.purple { background-color: #8A2BE2; }
+.green { background-color: #2E8B57; }
+.orange { background-color: #FFA500; }
+.brown { background-color: #8B2323; }
+
+.score-value {
+  width: 50px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.score-row.total {
+  font-weight: bold;
+}
+
+.insights-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+.insights-section p {
+  margin-bottom: 15px;
+}
+
+.back-button {
+  display: block;
+  margin: 30px auto 10px;
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #444;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .race-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-button {
+    margin-top: 15px;
+    align-self: flex-end;
+  }
+  
+  .score-row {
+    flex-wrap: wrap;
+  }
+  
+  .score-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  .score-value {
+    width: auto;
+    margin-left: 10px;
+  }
+}
+*/
